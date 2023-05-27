@@ -24,10 +24,44 @@ def joiningroomButton():
     global JbuttonClicked
     JbuttonClicked = not JbuttonClicked
     close_window()
+    open_chat_window()
 
 
 def close_window():
     window.destroy()
+    open_chat_window()
+
+def open_chat_window():
+    (pub_key, priv_key) = rsa.newkeys(512)
+    enc = Enc(pub_key, priv_key)
+    rcv = Rcv(pub_key, priv_key)
+
+    chat_window = tk.Tk()
+    chat_window.title("Chat")
+    chat_window.geometry("600x400")
+    chat_window.configure(background='#b8b088')
+
+    # Miejsce do wysswietlania wiadomościooooooooooo!1!!
+    messages_text = tk.Text(width=67, height=20, bg='#dcbee6')
+    messages_text.pack(side=tk.TOP, pady=10)
+
+    # Pole tekstowe do wpisywania wiadomości
+    message_entry = tk.Entry(chat_window, width=67,bg='#dcbee6')
+    message_entry.pack(side=tk.BOTTOM, pady=10)
+
+    # Przycisk do wysyłania wiadomości
+    send_button = tk.Button(chat_window, bg='#dcbee6', width='10', text="Wyślij",
+                            command=lambda: send_message(enc, rcv, message_entry, messages_text))
+    send_button.pack(side=tk.BOTTOM)
+
+    chat_window.mainloop()
+
+
+def send_message(enc, rcv, entry, text_widget):
+    message = entry.get()
+    # Tutaj można umieścić logikę wysyłania wiadomości
+    text_widget.insert(tk.END, "Ja: " + message + "\n")  # Wyświetlanie wysłanej wiadomości
+    entry.delete(0, tk.END)  # Wyczyszczenie pola tekstowego po wysłaniu wiadomości
 
 
 def start_chat():
