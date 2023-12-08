@@ -1,1 +1,1 @@
-# JPWP-peer-2-peer
+# Demo peer-2-peer
